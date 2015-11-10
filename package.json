@@ -1,0 +1,38 @@
+{
+  "name": "testGo",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon node_modules/mocha/bin/mocha --watch app --watch test",
+    "cover": "mocha --require blanket"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "app"
+      ],
+      "data-cover-never": [
+        "test",
+        "node_modules"
+      ]
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "~1.14.1",
+    "express": "~4.13.3",
+    "jsonwebtoken": "~5.4.1",
+    "multer": "~1.1.0",
+    "mongoose": "~4.2.4",
+    "validator": "~4.2.1",
+    "password-hash": "~1.2.2"
+  },
+  "devDependencies": {
+    "chai": "~3.4.0",
+    "superagent": "~1.4.0",
+    "blanket": "~1.1.9",
+    "mocha": "~2.3.3"
+  }
+}
