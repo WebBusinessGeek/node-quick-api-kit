@@ -102,6 +102,15 @@ describe("httpResponder", function() {
             };
             assert.deepEqual(result, expected);
         })
-    })
+    });
+    describe("respondToSuccessRequest", function() {
+
+    });
+    describe("respondToOKRequest", function() {
+
+    });
+    describe("respondToCreatedRequest", function() {
+
+    });
 
 });
