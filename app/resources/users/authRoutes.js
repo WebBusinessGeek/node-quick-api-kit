@@ -1,25 +1,23 @@
-var User = require("./model");
+var User = require("resources/users/model");
 var jwt = require("jsonwebtoken");
 var router = require("express").Router();
 var multer = require("multer")();
-var httpResponses = require("../../constants/httpResponses");
-var tokenSecret = require("../../private/appSecrets").tokenSecret;
+var httpResponses = require("constants/httpResponses");
+var tokenSecret = require("private/appSecrets").tokenSecret;
 var validator = require("validator");
 var passwordHasher = require("password-hash");
-var RevokedToken = require("../revokedTokens/model");
-
+var RevokedToken = require("resources/revokedTokens/model");
+var httpResponder = require("shared/httpResponder");
 
 router.post("/register", multer.array(), function(req, res){
     var email = req.body.email;
     var password = req.body.password;
     if(!email || !password) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failurePOSTResponseStatusCode,
-            data: {
-                message: httpResponses.failureRegisterMessage
-            }
-        })
+        return res.json(
+            httpResponder.respond(
+                httpResponses.failureResponseStatus,
+                httpResponses.failurePOSTResponseStatusCode,
+                httpResponses.failureRegisterMessage));
     }
     if(!validator.isEmail(email)) {
         return res.json({
