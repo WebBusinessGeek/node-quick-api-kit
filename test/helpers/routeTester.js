@@ -8,7 +8,7 @@ exports.serverListeningMessage = app.serverListeningMessage;
 exports.serverClosingMessage = app.serverClosingMessage;
 exports.testRoute = app.testRoute;
 exports.authNeededTestRoute = app.authNeededTestRoute;
-exports.fullTestingUrl = app.baseUrl + this.testingPort;
+exports.fullTestingUrl = app.localBaseUrl + this.testingPort;
 exports.successfulResponseStatus = app.successfulResponseStatus;
 exports.successfulGETResponseStatusCode = app.successfulGETResponseStatusCode;
 exports.successfulTestRouteGETResponseMessage = app.successfulTestRouteGETResponseMessage;
@@ -46,7 +46,7 @@ exports.stopServer = function(callback) {
 
 exports.forceNewPort = function() {
     this.testingPort = Math.floor((Math.random() * 3999) + 3000);
-    this.fullTestingUrl = app.baseUrl + this.testingPort;
+    this.fullTestingUrl = app.localBaseUrl + this.testingPort;
 };
 
 exports.getRequest = function(route) {

@@ -8,7 +8,7 @@ mongoose.connect(dbUri);
 
 exports.serverListeningMessage = "Server is listening on port: ";
 exports.serverClosingMessage = "Server is closing on port: ";
-exports.baseUrl = "http://localhost:";
+exports.localBaseUrl = "http://localhost:";
 
 var successStatus = exports.successfulResponseStatus = httpResponses.successfulResponseStatus;
 var successGETStatusCode = exports.successfulGETResponseStatusCode = httpResponses.successfulGETResponseStatusCode;
