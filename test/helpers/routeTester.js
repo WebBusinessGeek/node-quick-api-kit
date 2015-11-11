@@ -1,4 +1,4 @@
-var app = require("../../app/config/bootstrap");
+var app = require("../../app/bootstrap/bootstrap");
 var request = require("superagent");
 var assert = require("chai").assert;
 
