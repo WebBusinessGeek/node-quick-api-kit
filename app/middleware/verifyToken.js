@@ -9,7 +9,7 @@ router.use(function(req, res, next) {
     if(!token){
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureUnauthorizedResponseStatusCode,
+            statusCode: httpResponses.failureUnauthorizedStatusCode,
             data: {
                 message: httpResponses.failureNoTokenProvidedMessage
             }
@@ -19,7 +19,7 @@ router.use(function(req, res, next) {
         if(revokedToken) {
             return res.json({
                 status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failureUnauthorizedResponseStatusCode,
+                statusCode: httpResponses.failureUnauthorizedStatusCode,
                 data: {
                     message: httpResponses.failureInvalidTokenMessage
                 }
@@ -29,7 +29,7 @@ router.use(function(req, res, next) {
             if(!decoded) {
                 return res.json({
                     status: httpResponses.failureResponseStatus,
-                    statusCode: httpResponses.failureUnauthorizedResponseStatusCode,
+                    statusCode: httpResponses.failureUnauthorizedStatusCode,
                     data: {
                         message: httpResponses.failureInvalidTokenMessage
                     }

@@ -15,7 +15,7 @@ describe("VerifyToken Middleware", function() {
     it("should return fail message if no token is provided", function(done) {
         routeTester.postRequest(routeTester.authNeededTestRoute, {email: null}).end(function(err, res) {
             routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-            routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
+            routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
             routeTester.assert.equal(routeTester.failureNoTokenProvidedMessage, res.body.data.message);
             done();
         })
@@ -24,7 +24,7 @@ describe("VerifyToken Middleware", function() {
         this.timeout(20000);
         routeTester.postRequest(routeTester.authNeededTestRoute, {token: "badToken"}).end(function(err, res) {
             routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-            routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
+            routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
             routeTester.assert.equal(routeTester.failureInvalidTokenMessage, res.body.data.message);
             done();
         });
@@ -43,7 +43,7 @@ describe("VerifyToken Middleware", function() {
             if(!err) {
                 routeTester.postRequest(routeTester.authNeededTestRoute, {token: token}).end(function(err, res) {
                     routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                    routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
+                    routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
                     routeTester.assert.equal(routeTester.failureInvalidTokenMessage, res.body.data.message);
                     done();
                 })
@@ -62,7 +62,7 @@ describe("VerifyToken Middleware", function() {
         var token =  jwt.sign(payload, tokenSecret, options);
         routeTester.postRequest(routeTester.authNeededTestRoute, {token: token}).end(function(err, res) {
             routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
-            routeTester.assert.equal(routeTester.successfulGETResponseStatusCode, res.body.statusCode);
+            routeTester.assert.equal(routeTester.successOKStatusCode, res.body.statusCode);
             routeTester.assert.equal(routeTester.successfulTestRouteAuthNeededResponseMessage, res.body.data.message);
             done();
         })

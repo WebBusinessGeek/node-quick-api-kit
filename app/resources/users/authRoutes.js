@@ -16,13 +16,13 @@ router.post("/register", multer.array(), function(req, res){
         return res.json(
             httpResponder.respond(
                 httpResponses.failureResponseStatus,
-                httpResponses.failurePOSTResponseStatusCode,
-                httpResponses.failureRegisterMessage));
+                httpResponses.failureBadRequestStatusCode,
+                httpResponses.failureMissingEmailOrPasswordMessage));
     }
     if(!validator.isEmail(email)) {
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failurePOSTResponseStatusCode,
+            statusCode: httpResponses.failureBadRequestStatusCode,
             data: {
                 message: httpResponses.failureBadEmailFormatMessage
             }
@@ -31,7 +31,7 @@ router.post("/register", multer.array(), function(req, res){
     if(!validator.isLength(password, 7) || !validator.isAlphanumeric(password)) {
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failurePOSTResponseStatusCode,
+            statusCode: httpResponses.failureBadRequestStatusCode,
             data: {
                 message: httpResponses.failureBadPasswordFormatMessage
             }
@@ -45,7 +45,7 @@ router.post("/register", multer.array(), function(req, res){
         if(err) return res.send(err);
         return res.json({
             status: httpResponses.successfulResponseStatus,
-            statusCode: httpResponses.successfulPOSTResponseStatusCode,
+            statusCode: httpResponses.successCREATEDStatusCode,
             data: {
                 message: httpResponses.successfulRegisterMessage
             }
@@ -59,7 +59,7 @@ router.post("/authenticate", multer.array(), function(req, res) {
     if(!email) {
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failurePOSTResponseStatusCode,
+            statusCode: httpResponses.failureBadRequestStatusCode,
             data: {
                 message: httpResponses.failureNoEmailProvidedMessage
             }
@@ -68,7 +68,7 @@ router.post("/authenticate", multer.array(), function(req, res) {
     if(!password) {
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failurePOSTResponseStatusCode,
+            statusCode: httpResponses.failureBadRequestStatusCode,
             data: {
                 message: httpResponses.failureNoPasswordProvidedMessage
             }
@@ -78,18 +78,18 @@ router.post("/authenticate", multer.array(), function(req, res) {
         if(user == null) {
             return res.json({
                 status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failurePOSTResponseStatusCode,
+                statusCode: httpResponses.failureBadRequestStatusCode,
                 data: {
-                    message: httpResponses.failureNoUserByIdentifierMessage
+                    message: httpResponses.failureNoUserWithEmailMessage
                 }
             });
         }
         if(!passwordHasher.verify(password, user.password)) {
             return res.json({
                 status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failurePOSTResponseStatusCode,
+                statusCode: httpResponses.failureBadRequestStatusCode,
                 data: {
-                    message: httpResponses.failureInvalidPasswordMessage
+                    message: httpResponses.failurePasswordNotVerifiedMessage
                 }
             });
         }
@@ -105,7 +105,7 @@ router.post("/authenticate", multer.array(), function(req, res) {
 
             return res.json({
                 status: httpResponses.successfulResponseStatus,
-                statusCode: httpResponses.successfulGETResponseStatusCode,
+                statusCode: httpResponses.successOKStatusCode,
                 data: {
                     message: httpResponses.successfulAuthenticationMessage,
                     token: token
@@ -120,7 +120,7 @@ router.use("/deauthenticate", function(req, res) {
     if(!token) {
         return res.json({
             status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureUnauthorizedResponseStatusCode,
+            statusCode: httpResponses.failureUnauthorizedStatusCode,
             data: {
                 message: httpResponses.failureNoTokenProvidedMessage
             }
@@ -130,7 +130,7 @@ router.use("/deauthenticate", function(req, res) {
         if(!decoded) {
             return res.json({
                 status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failureUnauthorizedResponseStatusCode,
+                statusCode: httpResponses.failureUnauthorizedStatusCode,
                 data: {
                     message: httpResponses.failureInvalidTokenMessage
                 }
@@ -145,7 +145,7 @@ router.use("/deauthenticate", function(req, res) {
                 if(!err) {
                     return res.json({
                         status: httpResponses.successfulResponseStatus,
-                        statusCode: httpResponses.successfulGETResponseStatusCode,
+                        statusCode: httpResponses.successOKStatusCode,
                         data: {
                             message: httpResponses.successfulDEAuthenticationMessage
                         }
