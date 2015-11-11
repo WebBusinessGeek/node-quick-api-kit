@@ -1,8 +1,9 @@
 var httpResponder = require("shared/httpResponder");
+var httpResponses = require("constants/httpResponses");
 var assert = require("chai").assert;
 
 describe("httpResponder", function() {
-    describe("respond", function() {
+    describe("respond method", function() {
         it("should return a javascript object literal", function() {
             var result = httpResponder.respond();
             assert.isObject(result);
@@ -45,5 +46,62 @@ describe("httpResponder", function() {
             assert.deepEqual(result, correct);
         })
     });
+    describe("respondToFailedRequest method", function() {
+        it("should return a hard coded failure status, flexible status code, and flexible data object with a message", function() {
+            var message = "message will be here";
+            var statusCode = "status will go here";
+
+            var status = httpResponses.failureResponseStatus;
+
+            var result = httpResponder.respondToFailedRequest(statusCode, message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+        })
+    });
+    describe("respondToBadRequest method", function() {
+        it("should return a hard coded failure status, bad request code, and flexible data object with a message", function() {
+            var message = "message will be here";
+
+
+            var status = httpResponses.failureResponseStatus;
+            var statusCode = httpResponses.failureBadRequestStatusCode;
+
+            var result = httpResponder.respondToBadRequest(message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+
+        })
+    });
+    describe("respondToUnauthorizedRequest method", function() {
+        it("should return a hard coded failure status, Unauthorized code, and flexible data object with a message", function() {
+            var message = "message will be here";
+
+
+            var status = httpResponses.failureResponseStatus;
+            var statusCode = httpResponses.failureUnauthorizedStatusCode;
+
+            var result = httpResponder.respondToUnauthorizedRequest(message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+        })
+    })
 
 });

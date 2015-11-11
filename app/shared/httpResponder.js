@@ -1,3 +1,5 @@
+var httpResponses = require("constants/httpResponses");
+
 exports.respond = function(status, statusCode, message, data) {
     var dataObject = {message: message};
     if(data){
@@ -11,4 +13,14 @@ exports.respond = function(status, statusCode, message, data) {
         statusCode: statusCode,
         data: dataObject
     };
+};
+
+exports.respondToFailedRequest = function(statusCode, message, data) {
+    return this.respond(httpResponses.failureResponseStatus, statusCode, message, data);
+};
+exports.respondToBadRequest = function(message, data) {
+    return this.respondToFailedRequest(httpResponses.failureBadRequestStatusCode, message, data);
+};
+exports.respondToUnauthorizedRequest = function(message, data) {
+    return this.respondToFailedRequest(httpResponses.failureUnauthorizedStatusCode, message, data);
 };

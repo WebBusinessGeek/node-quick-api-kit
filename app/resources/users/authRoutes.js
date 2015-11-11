@@ -14,28 +14,18 @@ router.post("/register", multer.array(), function(req, res){
     var password = req.body.password;
     if(!email || !password) {
         return res.json(
-            httpResponder.respond(
-                httpResponses.failureResponseStatus,
-                httpResponses.failureBadRequestStatusCode,
-                httpResponses.failureMissingEmailOrPasswordMessage));
+            httpResponder.respondToBadRequest(httpResponses.failureMissingEmailOrPasswordMessage)
+        );
     }
     if(!validator.isEmail(email)) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureBadRequestStatusCode,
-            data: {
-                message: httpResponses.failureBadEmailFormatMessage
-            }
-        })
+        return res.json(
+            httpResponder.respondToBadRequest(httpResponses.failureBadEmailFormatMessage)
+        );
     }
     if(!validator.isLength(password, 7) || !validator.isAlphanumeric(password)) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureBadRequestStatusCode,
-            data: {
-                message: httpResponses.failureBadPasswordFormatMessage
-            }
-        });
+        return res.json(
+            httpResponder.respondToBadRequest(httpResponses.failureBadPasswordFormatMessage)
+        );
     }
     var newUser = User({
         email: email,
@@ -57,41 +47,25 @@ router.post("/authenticate", multer.array(), function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     if(!email) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureBadRequestStatusCode,
-            data: {
-                message: httpResponses.failureNoEmailProvidedMessage
-            }
-        });
+        return res.json(
+            httpResponder.respondToBadRequest(httpResponses.failureNoEmailProvidedMessage)
+        );
     }
     if(!password) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureBadRequestStatusCode,
-            data: {
-                message: httpResponses.failureNoPasswordProvidedMessage
-            }
-        });
+        return res.json(
+            httpResponder.respondToBadRequest(httpResponses.failureNoPasswordProvidedMessage)
+        );
     }
     User.findOne({email: email}, function(err, user) {
         if(user == null) {
-            return res.json({
-                status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failureBadRequestStatusCode,
-                data: {
-                    message: httpResponses.failureNoUserWithEmailMessage
-                }
-            });
+            return res.json(
+                httpResponder.respondToBadRequest(httpResponses.failureNoUserWithEmailMessage)
+            );
         }
         if(!passwordHasher.verify(password, user.password)) {
-            return res.json({
-                status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failureBadRequestStatusCode,
-                data: {
-                    message: httpResponses.failurePasswordNotVerifiedMessage
-                }
-            });
+            return res.json(
+                httpResponder.respondToBadRequest(httpResponses.failurePasswordNotVerifiedMessage)
+            );
         }
         else {
             var payload = {
@@ -118,23 +92,15 @@ router.post("/authenticate", multer.array(), function(req, res) {
 router.use("/deauthenticate", function(req, res) {
     var token = req.body.token || req.query.token || req.headers["x-access-token"];
     if(!token) {
-        return res.json({
-            status: httpResponses.failureResponseStatus,
-            statusCode: httpResponses.failureUnauthorizedStatusCode,
-            data: {
-                message: httpResponses.failureNoTokenProvidedMessage
-            }
-        });
+        return res.json(
+            httpResponder.respondToUnauthorizedRequest(httpResponses.failureNoTokenProvidedMessage)
+        );
     }
     jwt.verify(token, tokenSecret, function(err, decoded) {
         if(!decoded) {
-            return res.json({
-                status: httpResponses.failureResponseStatus,
-                statusCode: httpResponses.failureUnauthorizedStatusCode,
-                data: {
-                    message: httpResponses.failureInvalidTokenMessage
-                }
-            });
+            return res.json(
+                httpResponder.respondToUnauthorizedRequest(httpResponses.failureInvalidTokenMessage)
+            );
         }
         else{
             var newRevokedToken = new RevokedToken({

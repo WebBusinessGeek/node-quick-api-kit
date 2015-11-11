@@ -23,7 +23,7 @@ exports.successfulDEAuthenticationMessage = "User successfully de-authenticated"
 /*Failure Messages*/
 exports.failureMissingEmailOrPasswordMessage = "Missing email or password";
 exports.failureBadEmailFormatMessage = "Bad format for email";
-exports.failureBadPasswordFormatMessage = "Invalid password";
+exports.failureBadPasswordFormatMessage = "Bad format for password";
 exports.failureNoEmailProvidedMessage = "No email provided";
 exports.failureNoPasswordProvidedMessage = "No password provided";
 exports.failureNoUserWithEmailMessage = "No user by that email";
