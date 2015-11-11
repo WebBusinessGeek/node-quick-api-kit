@@ -1,4 +1,4 @@
-var User = require("../../../app/resources/users/model");
+var User = require("resources/users/model");
 var assert = require("chai").assert;
 
 describe("User Model", function() {

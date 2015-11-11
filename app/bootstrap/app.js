@@ -1,8 +1,8 @@
 var app = require("express")();
 var bodyParser = require("body-parser");
-var httpResponses = require("../constants/httpResponses");
+var httpResponses = require("constants/httpResponses");
 var mongoose = require("mongoose");
-var dbUri = require("../private/databaseSecrets").databaseUri;
+var dbUri = require("private/databaseSecrets").databaseUri;
 
 mongoose.connect(dbUri);
 

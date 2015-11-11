@@ -1,7 +1,7 @@
-var routeTester = require("../helpers/routeTester");
+var routeTester = require("testHelpers/routeTester");
 var jwt = require("jsonwebtoken");
-var tokenSecret = require("../../app/private/appSecrets").tokenSecret;
-var RevokedToken = require("../../app/resources/revokedTokens/model");
+var tokenSecret = require("private/appSecrets").tokenSecret;
+var RevokedToken = require("resources/revokedTokens/model");
 
 
 describe("VerifyToken Middleware", function() {

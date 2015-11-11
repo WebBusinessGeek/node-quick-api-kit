@@ -1,4 +1,4 @@
-var routeTester = require("../routeTester");
+var routeTester = require("testHelpers/routeTester");
 var assert = require("chai").assert;
 
 describe("routeTester", function() {
