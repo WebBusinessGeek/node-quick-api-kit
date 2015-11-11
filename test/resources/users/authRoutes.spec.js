@@ -1,9 +1,9 @@
-var routeTester = require("../../helpers/routeTester");
-var User = require("../../../app/resources/users/model");
+var routeTester = require("testHelpers/routeTester");
+var User = require("resources/users/model");
 var passwordHasher = require("password-hash");
 var jwt = require("jsonwebtoken");
-var tokenSecret = require("../../../app/private/appSecrets").tokenSecret;
-var RevokedToken = require("../../../app/resources/revokedTokens/model");
+var tokenSecret = require("private/appSecrets").tokenSecret;
+var RevokedToken = require("resources/revokedTokens/model");
 
 describe("User AuthRoutes", function(){
     before(function(done){
