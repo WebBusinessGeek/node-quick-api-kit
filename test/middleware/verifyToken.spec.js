@@ -21,6 +21,7 @@ describe("VerifyToken Middleware", function() {
         })
     });
     it("should return fail message if token is invalid", function(done) {
+        this.timeout(20000);
         routeTester.postRequest(routeTester.authNeededTestRoute, {token: "badToken"}).end(function(err, res) {
             routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
             routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
