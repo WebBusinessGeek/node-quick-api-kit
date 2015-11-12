@@ -3,6 +3,7 @@
 node_modules
 
 #Private directory files
+!app/private/
 app/private/*
 
 #IDE
