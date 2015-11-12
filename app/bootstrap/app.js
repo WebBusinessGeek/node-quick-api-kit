@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 var httpResponses = require("constants/httpResponses");
 var mongoose = require("mongoose");
 var dbUri = require("private/databaseSecrets").databaseUri;
+var httpResponder = require("shared/httpResponder");
 
 mongoose.connect(dbUri);
 
@@ -51,53 +52,33 @@ app.use(userEndpoint, userAuthRoutes);
 exports.testRoute = "/test-route";
 exports.authNeededTestRoute = "/auth-needed-test-route";
 app.get(this.testRoute, function(req, res) {
-    return res.json({
-        status : successStatus,
-        statusCode : successGETStatusCode,
-        data: {
-            message: testRouteSuccessfulGETMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(testRouteSuccessfulGETMessage)
+    );
 });
 app.post(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successPOSTStatusCode,
-        data: {
-            message: testRouteSuccessfulPOSTMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToCREATEDRequest(httpResponses.successfulTestRoutePOSTResponseMessage)
+    );
 });
 app.put(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successPUTStatusCode,
-        data: {
-            message: testRouteSuccessfulPUTMessage
-        }
-    })
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRoutePUTResponseMessage)
+    );
 });
 app.delete(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successDELETEStatusCode,
-        data: {
-            message: testRouteSuccessfulDELETEMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRouteDELETEResponseMessage)
+    );
 });
 
 var verifyTokenMiddleware = require("../middleware/verifyToken");
 app.use("/", verifyTokenMiddleware);
 
 app.post(this.authNeededTestRoute, function(req,res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successGETStatusCode,
-        data: {
-            message: testRouteAuthNeededResponseMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRouteAuthNeededResponseMessage)
+   );
 });
 
 
