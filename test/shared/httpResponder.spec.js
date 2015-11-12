@@ -103,14 +103,61 @@ describe("httpResponder", function() {
             assert.deepEqual(result, expected);
         })
     });
-    describe("respondToSuccessRequest", function() {
+    describe("respondToSuccessfulRequest", function() {
+        it("should return a hard coded success status, flexible statusCode, and flexible data object with a message", function() {
+            var message = "message will be here";
+            var statusCode = "status will go here";
 
+            var status = httpResponses.successfulResponseStatus;
+
+            var result = httpResponder.respondToSuccessfulRequest(statusCode, message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+        })
     });
     describe("respondToOKRequest", function() {
+        it("should return a hard coded success status, hard coded OK statusCode, and flexible data object", function() {
+            var message = "message will be here";
 
+
+            var status = httpResponses.successfulResponseStatus;
+            var statusCode = httpResponses.successOKStatusCode;
+
+            var result = httpResponder.respondToOKRequest(message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+        })
     });
     describe("respondToCreatedRequest", function() {
+        it("should return a hard coded success status, hard coded CREATED statusCode, and flexible data object", function() {
+            var message = "message will be here";
 
+
+            var status = httpResponses.successfulResponseStatus;
+            var statusCode = httpResponses.successCREATEDStatusCode;
+
+            var result = httpResponder.respondToCREATEDRequest(message);
+            var expected = {
+                status: status,
+                statusCode: statusCode,
+                data: {
+                    message: message
+                }
+            };
+            assert.deepEqual(result, expected);
+        })
     });
 
 });

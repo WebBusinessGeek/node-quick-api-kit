@@ -24,3 +24,13 @@ exports.respondToBadRequest = function(message, data) {
 exports.respondToUnauthorizedRequest = function(message, data) {
     return this.respondToFailedRequest(httpResponses.failureUnauthorizedStatusCode, message, data);
 };
+exports.respondToSuccessfulRequest = function(statusCode, message, data) {
+    return this.respond(httpResponses.successfulResponseStatus, statusCode, message, data);
+};
+exports.respondToOKRequest = function(message, data) {
+    return this.respondToSuccessfulRequest(httpResponses.successOKStatusCode, message, data);
+};
+exports.respondToCREATEDRequest = function(message, data) {
+    return this.respondToSuccessfulRequest(httpResponses.successCREATEDStatusCode, message, data);
+};
+
