@@ -33,13 +33,9 @@ router.post("/register", multer.array(), function(req, res){
     });
     newUser.save(function(err) {
         if(err) return res.send(err);
-        return res.json({
-            status: httpResponses.successfulResponseStatus,
-            statusCode: httpResponses.successCREATEDStatusCode,
-            data: {
-                message: httpResponses.successfulRegisterMessage
-            }
-        });
+        return res.json(
+            httpResponder.respondToCREATEDRequest(httpResponses.successfulRegisterMessage)
+        );
     });
 });
 
@@ -77,14 +73,9 @@ router.post("/authenticate", multer.array(), function(req, res) {
             };
             var token = jwt.sign(payload, tokenSecret, options);
 
-            return res.json({
-                status: httpResponses.successfulResponseStatus,
-                statusCode: httpResponses.successOKStatusCode,
-                data: {
-                    message: httpResponses.successfulAuthenticationMessage,
-                    token: token
-                }
-            })
+            return res.json(
+                httpResponder.respondToOKRequest(httpResponses.successfulAuthenticationMessage, {token: token})
+            );
         }
     });
 });
@@ -109,13 +100,9 @@ router.use("/deauthenticate", function(req, res) {
 
             newRevokedToken.save(function(err) {
                 if(!err) {
-                    return res.json({
-                        status: httpResponses.successfulResponseStatus,
-                        statusCode: httpResponses.successOKStatusCode,
-                        data: {
-                            message: httpResponses.successfulDEAuthenticationMessage
-                        }
-                    });
+                    return res.json(
+                        httpResponder.respondToOKRequest(httpResponses.successfulDEAuthenticationMessage)
+                    );
                 }
             });
         }
