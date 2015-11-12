@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 var httpResponses = require("constants/httpResponses");
 var mongoose = require("mongoose");
 var dbUri = require("private/databaseSecrets").databaseUri;
+var httpResponder = require("shared/httpResponder");
 
 mongoose.connect(dbUri);
 
@@ -11,28 +12,28 @@ exports.serverClosingMessage = "Server is closing on port: ";
 exports.localBaseUrl = "http://localhost:";
 
 var successStatus = exports.successfulResponseStatus = httpResponses.successfulResponseStatus;
-var successGETStatusCode = exports.successfulGETResponseStatusCode = httpResponses.successfulGETResponseStatusCode;
+var successGETStatusCode = exports.successOKStatusCode = httpResponses.successOKStatusCode;
 var testRouteSuccessfulGETMessage = exports.successfulTestRouteGETResponseMessage = httpResponses.successfulTestRouteGETResponseMessage;
-var successPOSTStatusCode = exports.successfulPOSTResponseStatusCode = httpResponses.successfulPOSTResponseStatusCode;
+var successPOSTStatusCode = exports.successCREATEDStatusCode = httpResponses.successCREATEDStatusCode;
 var testRouteSuccessfulPOSTMessage = exports.successfulTestRoutePOSTResponseMessage = httpResponses.successfulTestRoutePOSTResponseMessage;
-var successPUTStatusCode = exports.successfulPUTResponseStatusCode = httpResponses.successfulPUTResponseStatusCode;
+var successPUTStatusCode = exports.successOKStatusCode = httpResponses.successOKStatusCode;
 var testRouteSuccessfulPUTMessage = exports.successfulTestRoutePUTResponseMessage = httpResponses.successfulTestRoutePUTResponseMessage;
-var successDELETEStatusCode = exports.successfulDELETEResponseStatusCode = httpResponses.successfulDELETEResponseStatusCode;
+var successDELETEStatusCode = exports.successOKStatusCode = httpResponses.successOKStatusCode;
 var testRouteSuccessfulDELETEMessage = exports.successfulTestRouteDELETEResponseMessage = httpResponses.successfulTestRouteDELETEResponseMessage;
 var testRouteAuthNeededResponseMessage = exports.successfulTestRouteAuthNeededResponseMessage = httpResponses.successfulTestRouteAuthNeededResponseMessage;
 
 exports.successfulAuthenticationMessage = httpResponses.successfulAuthenticationMessage;
 exports.successfulRegisterMessage = httpResponses.successfulRegisterMessage;
-exports.failureRegisterMessage = httpResponses.failureRegisterMessage;
+exports.failureMissingEmailOrPasswordMessage = httpResponses.failureMissingEmailOrPasswordMessage;
 exports.failureResponseStatus = httpResponses.failureResponseStatus;
-exports.failurePOSTResponseStatusCode = httpResponses.failurePOSTResponseStatusCode;
+exports.failureBadRequestStatusCode = httpResponses.failureBadRequestStatusCode;
 exports.failureBadEmailFormatMessage = httpResponses.failureBadEmailFormatMessage;
 exports.failureBadPasswordFormatMessage = httpResponses.failureBadPasswordFormatMessage;
 exports.failureNoEmailProvidedMessage = httpResponses.failureNoEmailProvidedMessage;
 exports.failureNoPasswordProvidedMessage = httpResponses.failureNoPasswordProvidedMessage;
-exports.failureNoUserByIdentifierMessage = httpResponses.failureNoUserByIdentifierMessage;
-exports.failureInvalidPasswordMessage = httpResponses.failureInvalidPasswordMessage;
-exports.failureUnauthorizedResponseStatusCode = httpResponses.failureUnauthorizedResponseStatusCode;
+exports.failureNoUserWithEmailMessage = httpResponses.failureNoUserWithEmailMessage;
+exports.failurePasswordNotVerifiedMessage = httpResponses.failurePasswordNotVerifiedMessage;
+exports.failureUnauthorizedStatusCode = httpResponses.failureUnauthorizedStatusCode;
 exports.failureNoTokenProvidedMessage = httpResponses.failureNoTokenProvidedMessage;
 exports.failureInvalidTokenMessage = httpResponses.failureInvalidTokenMessage;
 exports.successfulDEAuthenticationMessage = httpResponses.successfulDEAuthenticationMessage;
@@ -51,53 +52,33 @@ app.use(userEndpoint, userAuthRoutes);
 exports.testRoute = "/test-route";
 exports.authNeededTestRoute = "/auth-needed-test-route";
 app.get(this.testRoute, function(req, res) {
-    return res.json({
-        status : successStatus,
-        statusCode : successGETStatusCode,
-        data: {
-            message: testRouteSuccessfulGETMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(testRouteSuccessfulGETMessage)
+    );
 });
 app.post(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successPOSTStatusCode,
-        data: {
-            message: testRouteSuccessfulPOSTMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToCREATEDRequest(httpResponses.successfulTestRoutePOSTResponseMessage)
+    );
 });
 app.put(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successPUTStatusCode,
-        data: {
-            message: testRouteSuccessfulPUTMessage
-        }
-    })
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRoutePUTResponseMessage)
+    );
 });
 app.delete(this.testRoute, function(req, res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successDELETEStatusCode,
-        data: {
-            message: testRouteSuccessfulDELETEMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRouteDELETEResponseMessage)
+    );
 });
 
 var verifyTokenMiddleware = require("../middleware/verifyToken");
 app.use("/", verifyTokenMiddleware);
 
 app.post(this.authNeededTestRoute, function(req,res) {
-    return res.json({
-        status: successStatus,
-        statusCode: successGETStatusCode,
-        data: {
-            message: testRouteAuthNeededResponseMessage
-        }
-    });
+    return res.json(
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRouteAuthNeededResponseMessage)
+   );
 });
 
 

@@ -20,7 +20,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.successfulPOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.successCREATEDStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.successfulRegisterMessage, res.body.data.message);
                 done();
             });
@@ -32,8 +32,8 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
-                routeTester.assert.equal(routeTester.failureRegisterMessage, res.body.data.message);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureMissingEmailOrPasswordMessage, res.body.data.message);
                 done();
             });
         });
@@ -44,8 +44,8 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
-                routeTester.assert.equal(routeTester.failureRegisterMessage, res.body.data.message);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureMissingEmailOrPasswordMessage, res.body.data.message);
                 done();
             });
         });
@@ -56,7 +56,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadEmailFormatMessage, res.body.data.message);
                 done();
             });
@@ -68,7 +68,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadPasswordFormatMessage, res.body.data.message);
                 done();
             });
@@ -80,7 +80,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadPasswordFormatMessage, res.body.data.message);
                 done();
             });
@@ -95,7 +95,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoEmailProvidedMessage, res.body.data.message);
                 done();
             });
@@ -108,7 +108,7 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoPasswordProvidedMessage, res.body.data.message);
                 done();
             });
@@ -120,8 +120,8 @@ describe("User AuthRoutes", function(){
             };
             routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
-                routeTester.assert.equal(routeTester.failureNoUserByIdentifierMessage, res.body.data.message);
+                routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureNoUserWithEmailMessage, res.body.data.message);
                 done();
             });
         });
@@ -134,8 +134,8 @@ describe("User AuthRoutes", function(){
                 if(!err) {
                     routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", {email: "tester@emailtester.com", password: "wrongpass"}).end(function(err, res) {
                         routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                        routeTester.assert.equal(routeTester.failurePOSTResponseStatusCode, res.body.statusCode);
-                        routeTester.assert.equal(routeTester.failureInvalidPasswordMessage, res.body.data.message);
+                        routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
+                        routeTester.assert.equal(routeTester.failurePasswordNotVerifiedMessage, res.body.data.message);
                         done();
                     });
                 }
@@ -151,7 +151,7 @@ describe("User AuthRoutes", function(){
                 if(!err) {
                     routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", {email: "tester445@emailtester.com", password: "password"}).end(function(err, res) {
                         routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
-                        routeTester.assert.equal(routeTester.successfulGETResponseStatusCode, res.body.statusCode);
+                        routeTester.assert.equal(routeTester.successOKStatusCode, res.body.statusCode);
                         routeTester.assert.equal(routeTester.successfulAuthenticationMessage, res.body.data.message);
                         routeTester.assert.isString(res.body.data.token);
                         done();
@@ -164,7 +164,7 @@ describe("User AuthRoutes", function(){
         it("should return fail message if no token is sent", function(done) {
             routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate").end(function(err,res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoTokenProvidedMessage, res.body.data.message);
                 done();
             });
@@ -178,7 +178,7 @@ describe("User AuthRoutes", function(){
             var token = jwt.sign(payload,tokenSecret,options);
             routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate" + "?token=" + token).end(function(err,res) {
                 routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.successfulGETResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.successOKStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.successfulDEAuthenticationMessage, res.body.data.message);
                 done();
             });
@@ -205,7 +205,7 @@ describe("User AuthRoutes", function(){
             var badToken = "thisIsABadToken";
             routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate" + "?token=" + badToken).end(function(err,res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
-                routeTester.assert.equal(routeTester.failureUnauthorizedResponseStatusCode, res.body.statusCode);
+                routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureInvalidTokenMessage, res.body.data.message);
                 done();
             });

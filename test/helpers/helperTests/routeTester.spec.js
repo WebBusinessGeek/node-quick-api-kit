@@ -64,7 +64,7 @@ describe("routeTester", function() {
             it("should successfully make a GET request", function(done) {
                 routeTester.getRequest(routeTester.testRoute).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
-                    assert.equal(res.body.statusCode, routeTester.successfulGETResponseStatusCode);
+                    assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRouteGETResponseMessage);
                     done();
                 });
@@ -79,7 +79,7 @@ describe("routeTester", function() {
             it("should successfully make a POST request", function(done) {
                 routeTester.postRequest(routeTester.testRoute).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
-                    assert.equal(res.body.statusCode, routeTester.successfulPOSTResponseStatusCode);
+                    assert.equal(res.body.statusCode, routeTester.successCREATEDStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRoutePOSTResponseMessage);
                     done();
                 })
@@ -96,7 +96,7 @@ describe("routeTester", function() {
                 };
                 routeTester.putRequest(routeTester.testRoute, dataToPut).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
-                    assert.equal(res.body.statusCode, routeTester.successfulPUTResponseStatusCode);
+                    assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRoutePUTResponseMessage);
                     done();
                 })
@@ -110,7 +110,7 @@ describe("routeTester", function() {
             it("should successfully make a DELETE request", function(done) {
                 routeTester.deleteRequest(routeTester.testRoute).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
-                    assert.equal(res.body.statusCode, routeTester.successfulDELETEResponseStatusCode);
+                    assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRouteDELETEResponseMessage);
                     done();
                 });

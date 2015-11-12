@@ -13,6 +13,7 @@
     "private" : "app/private",
     "middleware" : "app/middleware",
     "resources" : "app/resources",
+    "shared" : "app/shared",
     "test-helpers" : "test/helpers",
     "testHelpers" : "test/helpers"
   },
