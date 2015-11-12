@@ -1,6 +1,7 @@
 var app = require("bootstrap/app");
 var request = require("superagent");
 var assert = require("chai").assert;
+var httpResponses = require("constants/httpResponses");
 
 exports.assert = assert;
 exports.testingPort = Math.floor((Math.random() * 3999) + 3000);
@@ -9,32 +10,38 @@ exports.serverClosingMessage = app.serverClosingMessage;
 exports.testRoute = app.testRoute;
 exports.authNeededTestRoute = app.authNeededTestRoute;
 exports.fullTestingUrl = app.localBaseUrl + this.testingPort;
-exports.successfulResponseStatus = app.successfulResponseStatus;
-exports.successOKStatusCode = app.successOKStatusCode;
-exports.successfulTestRouteGETResponseMessage = app.successfulTestRouteGETResponseMessage;
-exports.successCREATEDStatusCode = app.successCREATEDStatusCode;
-exports.successfulTestRoutePOSTResponseMessage = app.successfulTestRoutePOSTResponseMessage;
-exports.successOKStatusCode = app.successOKStatusCode;
-exports.successfulTestRoutePUTResponseMessage = app.successfulTestRoutePUTResponseMessage;
-exports.successOKStatusCode = app.successOKStatusCode;
-exports.failureBadRequestStatusCode = app.failureBadRequestStatusCode;
-exports.failureUnauthorizedStatusCode = app.failureUnauthorizedStatusCode;
-exports.successfulTestRouteDELETEResponseMessage = app.successfulTestRouteDELETEResponseMessage;
 exports.usersEndpoint = app.usersEndpoint;
-exports.successfulRegisterMessage = app.successfulRegisterMessage;
-exports.failureResponseStatus = app.failureResponseStatus;
-exports.failureMissingEmailOrPasswordMessage = app.failureMissingEmailOrPasswordMessage;
-exports.failureBadEmailFormatMessage = app.failureBadEmailFormatMessage;
-exports.failureBadPasswordFormatMessage = app.failureBadPasswordFormatMessage;
-exports.failureNoEmailProvidedMessage = app.failureNoEmailProvidedMessage;
-exports.failureNoPasswordProvidedMessage = app.failureNoPasswordProvidedMessage;
-exports.failureNoUserWithEmailMessage = app.failureNoUserWithEmailMessage;
-exports.failurePasswordNotVerifiedMessage = app.failurePasswordNotVerifiedMessage;
-exports.successfulAuthenticationMessage = app.successfulAuthenticationMessage;
-exports.successfulTestRouteAuthNeededResponseMessage = app.successfulTestRouteAuthNeededResponseMessage;
-exports.failureNoTokenProvidedMessage = app.failureNoTokenProvidedMessage;
-exports.failureInvalidTokenMessage = app.failureInvalidTokenMessage;
-exports.successfulDEAuthenticationMessage = app.successfulDEAuthenticationMessage;
+
+
+exports.successfulResponseStatus = httpResponses.successfulResponseStatus;
+exports.failureResponseStatus = httpResponses.failureResponseStatus;
+
+
+exports.successOKStatusCode = httpResponses.successOKStatusCode;
+exports.successCREATEDStatusCode = httpResponses.successCREATEDStatusCode;
+exports.failureBadRequestStatusCode = httpResponses.failureBadRequestStatusCode;
+exports.failureUnauthorizedStatusCode = httpResponses.failureUnauthorizedStatusCode;
+
+
+exports.successfulTestRouteGETResponseMessage = httpResponses.successfulTestRouteGETResponseMessage;
+exports.successfulTestRoutePOSTResponseMessage = httpResponses.successfulTestRoutePOSTResponseMessage;
+exports.successfulTestRoutePUTResponseMessage = httpResponses.successfulTestRoutePUTResponseMessage;
+exports.successfulTestRouteDELETEResponseMessage = httpResponses.successfulTestRouteDELETEResponseMessage;
+exports.successfulTestRouteAuthNeededResponseMessage = httpResponses.successfulTestRouteAuthNeededResponseMessage;
+
+
+exports.successfulRegisterMessage = httpResponses.successfulRegisterMessage;
+exports.failureMissingEmailOrPasswordMessage = httpResponses.failureMissingEmailOrPasswordMessage;
+exports.failureBadEmailFormatMessage = httpResponses.failureBadEmailFormatMessage;
+exports.failureBadPasswordFormatMessage = httpResponses.failureBadPasswordFormatMessage;
+exports.failureNoEmailProvidedMessage = httpResponses.failureNoEmailProvidedMessage;
+exports.failureNoPasswordProvidedMessage = httpResponses.failureNoPasswordProvidedMessage;
+exports.failureNoUserWithEmailMessage = httpResponses.failureNoUserWithEmailMessage;
+exports.failurePasswordNotVerifiedMessage = httpResponses.failurePasswordNotVerifiedMessage;
+exports.successfulAuthenticationMessage = httpResponses.successfulAuthenticationMessage;
+exports.failureNoTokenProvidedMessage = httpResponses.failureNoTokenProvidedMessage;
+exports.failureInvalidTokenMessage = httpResponses.failureInvalidTokenMessage;
+exports.successfulDEAuthenticationMessage = httpResponses.successfulDEAuthenticationMessage;
 
 exports.startServer = function(callback) {
     return app.start(this.testingPort, callback);
