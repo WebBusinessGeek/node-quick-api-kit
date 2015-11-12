@@ -53,7 +53,7 @@ exports.testRoute = "/test-route";
 exports.authNeededTestRoute = "/auth-needed-test-route";
 app.get(this.testRoute, function(req, res) {
     return res.json(
-        httpResponder.respondToOKRequest(testRouteSuccessfulGETMessage)
+        httpResponder.respondToOKRequest(httpResponses.successfulTestRouteGETResponseMessage)
     );
 });
 app.post(this.testRoute, function(req, res) {
