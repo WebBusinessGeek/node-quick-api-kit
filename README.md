@@ -9,13 +9,13 @@
     `node_modules/.bin/gulp setup`
 
 3. Add the secret variables to the private project files.
-    * In databaseSecrets.js...
+    * In the databaseSecrets.js file:
 
     `exports.databaseUri = "your uri should go here";`
 
-    * In appSecrets.js...
+    * In the appSecrets.js file:
 
-    `exports.databaseUri = "your uri should go here";`
+    `exports.tokenSecret = "your jwt secret should go here";`
 
 4. Run tests
 
