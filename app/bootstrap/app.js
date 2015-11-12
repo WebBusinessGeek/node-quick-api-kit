@@ -1,25 +1,24 @@
 var app = require("express")();
-var bodyParser = require("body-parser");
 var httpResponses = require("constants/httpResponses");
-var mongoose = require("mongoose");
-var dbUri = require("private/databaseSecrets").databaseUri;
 var httpResponder = require("shared/httpResponder");
 
+
+
+var mongoose = require("mongoose");
+var dbUri = require("private/databaseSecrets").databaseUri;
 mongoose.connect(dbUri);
 
 
-exports.localBaseUrl = "http://localhost:";
-
-
+var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 
 var userEndpoint = exports.usersEndpoint = "/users";
-var userAuthRoutes = require("../resources/users/authRoutes");
-//user authRoutes
-app.use(userEndpoint, userAuthRoutes);
+var userBootstrapRoutes = require("resources/users/bootstrapRoutes");
 
+//user authRoutes
+app.use(userEndpoint, userBootstrapRoutes);
 
 //Routes for testing
 exports.testRoute = "/test-route";
@@ -47,7 +46,7 @@ app.delete(this.testRoute, function(req, res) {
 });
 
 /*TOKEN VERIFICATION MIDDLEWARE*/
-var verifyTokenMiddleware = require("../middleware/verifyToken");
+var verifyTokenMiddleware = require("middleware/verifyToken");
 app.use("/", verifyTokenMiddleware);
 /*Define Routes that need authentication after this line*/
 
@@ -58,7 +57,7 @@ app.post(this.authNeededTestRoute, function(req,res) {
    );
 });
 
-
+exports.localBaseUrl = "http://localhost:";
 exports.serverListeningMessage = "Server is listening on port: ";
 exports.serverClosingMessage = "Server is closing on port: ";
 
