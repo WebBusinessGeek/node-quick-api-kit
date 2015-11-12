@@ -1,6 +1,6 @@
+var router = require("express").Router();
 var User = require("resources/users/model");
 var jwt = require("jsonwebtoken");
-var router = require("express").Router();
 var multer = require("multer")();
 var httpResponses = require("constants/httpResponses");
 var tokenSecret = require("private/appSecrets").tokenSecret;
