@@ -7,15 +7,15 @@
     "test": "nodemon node_modules/mocha/bin/mocha --watch app --watch test",
     "cover": "mocha --require blanket"
   },
-  "epr" : {
-    "bootstrap" : "app/bootstrap",
-    "constants" : "app/constants",
-    "private" : "app/private",
-    "middleware" : "app/middleware",
-    "resources" : "app/resources",
-    "shared" : "app/shared",
-    "test-helpers" : "test/helpers",
-    "testHelpers" : "test/helpers"
+  "epr": {
+    "bootstrap": "app/bootstrap",
+    "constants": "app/constants",
+    "private": "app/private",
+    "middleware": "app/middleware",
+    "resources": "app/resources",
+    "shared": "app/shared",
+    "test-helpers": "test/helpers",
+    "testHelpers": "test/helpers"
   },
   "config": {
     "blanket": {
@@ -38,12 +38,14 @@
     "mongoose": "~4.2.4",
     "validator": "~4.2.1",
     "password-hash": "~1.2.2",
-    "epr": "~1.0.0"
+    "epr": "~1.0.0",
+    "gulp": "~3.9.0"
   },
   "devDependencies": {
     "chai": "~3.4.0",
     "superagent": "~1.4.0",
     "blanket": "~1.1.9",
-    "mocha": "~2.3.3"
+    "mocha": "~2.3.3",
+    "gulp-shell": "~0.5.1"
   }
 }
