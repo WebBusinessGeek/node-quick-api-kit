@@ -109,5 +109,4 @@ router.use(endpoints.DEauthenticateEndpoint, function(req, res) {
 
 });
 
-
 module.exports = router;
