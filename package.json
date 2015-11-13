@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon node_modules/mocha/bin/mocha --watch app --watch test",
-    "cover": "mocha --require blanket"
+    "cover": "node_modules/.bin/mocha --require blanket -R html-cov > test/coverage.html"
   },
   "epr": {
     "bootstrap": "app/bootstrap",
@@ -19,13 +19,8 @@
   },
   "config": {
     "blanket": {
-      "pattern": [
-        "app"
-      ],
-      "data-cover-never": [
-        "test",
-        "node_modules"
-      ]
+      "pattern": "app",
+      "data-cover-never": "node_modules"
     }
   },
   "author": "",
@@ -44,7 +39,7 @@
   "devDependencies": {
     "chai": "~3.4.0",
     "superagent": "~1.4.0",
-    "blanket": "~1.1.9",
+    "blanket": "git://github.com/alex-seville/blanket.git",
     "mocha": "~2.3.3",
     "gulp-shell": "~0.5.1"
   }
