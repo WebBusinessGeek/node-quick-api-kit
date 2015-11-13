@@ -4,6 +4,9 @@ var passwordHasher = require("password-hash");
 var jwt = require("jsonwebtoken");
 var tokenSecret = require("private/appSecrets").tokenSecret;
 var RevokedToken = require("resources/revokedTokens/model");
+var mimic = require("testHelpers/mimic");
+var endpoints = require("constants/endpoints");
+var tokenOptions = require("constants/tokenOptions");
 
 describe("User AuthRoutes", function(){
     before(function(done){
@@ -15,10 +18,10 @@ describe("User AuthRoutes", function(){
     describe("POST /register", function() {
         it("should create and save new User when expected inputs are passed in", function(done) {
             var sendData = {
-                email: "someEmail@email.com",
-                password: "password"
+                email: mimic.mimicValidEmail(),
+                password: mimic.mimicValidPassword()
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.successCREATEDStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.successfulRegisterMessage, res.body.data.message);
@@ -28,9 +31,9 @@ describe("User AuthRoutes", function(){
         it("should return a failure when missing the email", function(done) {
             var sendData = {
                 email: null,
-                password: "password"
+                password: mimic.mimicValidPassword()
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureMissingEmailOrPasswordMessage, res.body.data.message);
@@ -39,10 +42,10 @@ describe("User AuthRoutes", function(){
         });
         it("should return a failure when missing the password", function(done) {
             var sendData = {
-                email: "someEmail@email.com",
+                email: mimic.mimicValidEmail(),
                 password: null
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureMissingEmailOrPasswordMessage, res.body.data.message);
@@ -51,10 +54,10 @@ describe("User AuthRoutes", function(){
         });
         it("should return a failure if email is not in email format", function(done) {
             var sendData = {
-                email: "bad@bad",
-                password: "password"
+                email: mimic.invalidEmail,
+                password: mimic.mimicValidPassword()
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadEmailFormatMessage, res.body.data.message);
@@ -63,10 +66,10 @@ describe("User AuthRoutes", function(){
         });
         it("should return a failure if password is too short", function(done) {
             var sendData = {
-                email: "email@email.com",
-                password: "bad"
+                email: mimic.mimicValidEmail(),
+                password: mimic.invalidPasswordShort
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadPasswordFormatMessage, res.body.data.message);
@@ -75,10 +78,10 @@ describe("User AuthRoutes", function(){
         });
         it("should return a failure if password contains not alphanumeric characters", function(done) {
             var sendData = {
-                email: "email@email.com",
-                password: "bad1234567**"
+                email: mimic.mimicValidEmail(),
+                password: mimic.invalidPasswordBadChars
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/register", sendData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.registerEndpoint, sendData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureBadPasswordFormatMessage, res.body.data.message);
@@ -91,9 +94,9 @@ describe("User AuthRoutes", function(){
         it("should return a fail message if no email provided", function(done) {
             var testData = {
                 email: null,
-                password: "password"
+                password: mimic.mimicValidPassword()
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.authenticateEndpoint, testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoEmailProvidedMessage, res.body.data.message);
@@ -103,10 +106,10 @@ describe("User AuthRoutes", function(){
 
         it("should return a fail message if no password provided", function(done) {
             var testData = {
-                email: "email@email.com",
+                email: mimic.mimicValidEmail(),
                 password: null
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.authenticateEndpoint, testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoPasswordProvidedMessage, res.body.data.message);
@@ -115,10 +118,10 @@ describe("User AuthRoutes", function(){
         });
         it("should return a fail message if user is not in database", function(done) {
             var testData = {
-                email: "bad@email",
-                password: "password"
+                email: mimic.mimicUniqueValidEmail(),
+                password: mimic.mimicValidPassword()
             };
-            routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", testData).end(function(err, res) {
+            routeTester.postRequest(routeTester.usersEndpoint + endpoints.authenticateEndpoint, testData).end(function(err, res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoUserWithEmailMessage, res.body.data.message);
@@ -127,12 +130,12 @@ describe("User AuthRoutes", function(){
         });
         it("should return a fail message if passwords do not match", function(done) {
             var testUser = new User({
-                email: "tester@emailtester.com",
-                password: "password"
+                email: mimic.mimicValidEmail(),
+                password: mimic.mimicValidPassword()
             });
             testUser.save(function(err) {
                 if(!err) {
-                    routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", {email: "tester@emailtester.com", password: "wrongpass"}).end(function(err, res) {
+                    routeTester.postRequest(routeTester.usersEndpoint + endpoints.authenticateEndpoint, {email: testUser.email, password: mimic.mimicValidPassword()}).end(function(err, res) {
                         routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                         routeTester.assert.equal(routeTester.failureBadRequestStatusCode, res.body.statusCode);
                         routeTester.assert.equal(routeTester.failurePasswordNotVerifiedMessage, res.body.data.message);
@@ -143,13 +146,14 @@ describe("User AuthRoutes", function(){
 
         });
         it("should return a token if password do match", function(done) {
+            var password = mimic.mimicValidPassword();
             var testUser = new User({
-                email: "tester445@emailtester.com",
-                password: passwordHasher.generate("password")
+                email: mimic.mimicUniqueValidEmail(),
+                password: passwordHasher.generate(password)
             });
             testUser.save(function(err) {
                 if(!err) {
-                    routeTester.postRequest(routeTester.usersEndpoint + "/authenticate", {email: "tester445@emailtester.com", password: "password"}).end(function(err, res) {
+                    routeTester.postRequest(routeTester.usersEndpoint + endpoints.authenticateEndpoint, {email: testUser.email, password: password}).end(function(err, res) {
                         routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
                         routeTester.assert.equal(routeTester.successOKStatusCode, res.body.statusCode);
                         routeTester.assert.equal(routeTester.successfulAuthenticationMessage, res.body.data.message);
@@ -162,7 +166,7 @@ describe("User AuthRoutes", function(){
     });
     describe("GET /deauthenticate", function() {
         it("should return fail message if no token is sent", function(done) {
-            routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate").end(function(err,res) {
+            routeTester.getRequest(routeTester.usersEndpoint + endpoints.DEauthenticateEndpoint).end(function(err,res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureNoTokenProvidedMessage, res.body.data.message);
@@ -170,13 +174,11 @@ describe("User AuthRoutes", function(){
             });
         });
         it("should successfully accept requests", function(done) {
-            var payload = {};
-            var options = {
-                expiresIn: "2h",
-                issuer: "test"
+            var payload = {
+                random: Math.floor((Math.random() * 100) + 1)
             };
-            var token = jwt.sign(payload,tokenSecret,options);
-            routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate" + "?token=" + token).end(function(err,res) {
+            var token =  jwt.sign(payload, tokenSecret, tokenOptions);
+            routeTester.getRequest(routeTester.usersEndpoint + endpoints.DEauthenticateEndpoint + endpoints.tokenQuery + token).end(function(err,res) {
                 routeTester.assert.equal(routeTester.successfulResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.successOKStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.successfulDEAuthenticationMessage, res.body.data.message);
@@ -184,13 +186,11 @@ describe("User AuthRoutes", function(){
             });
         });
         it("should create a new RevokedToken instance in db", function(done) {
-            var payload = {};
-            var options = {
-                expiresIn: "2h",
-                issuer: "test"
+            var payload = {
+                random: Math.floor((Math.random() * 100) + 1)
             };
-            var token = jwt.sign(payload,tokenSecret,options);
-            routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate" + "?token=" + token).end(function(err) {
+            var token =  jwt.sign(payload, tokenSecret, tokenOptions);
+            routeTester.getRequest(routeTester.usersEndpoint + endpoints.DEauthenticateEndpoint + endpoints.tokenQuery + token).end(function(err) {
                 if(!err) {
                     RevokedToken.findOne({token: token}, function(err, revokedToken) {
                         if(!err) {
@@ -202,8 +202,8 @@ describe("User AuthRoutes", function(){
             });
         });
         it("should return fail message if token is not valid", function(done) {
-            var badToken = "thisIsABadToken";
-            routeTester.getRequest(routeTester.usersEndpoint + "/deauthenticate" + "?token=" + badToken).end(function(err,res) {
+            var badToken = mimic.badJWTToken;
+            routeTester.getRequest(routeTester.usersEndpoint + endpoints.DEauthenticateEndpoint + endpoints.tokenQuery + badToken).end(function(err,res) {
                 routeTester.assert.equal(routeTester.failureResponseStatus, res.body.status);
                 routeTester.assert.equal(routeTester.failureUnauthorizedStatusCode, res.body.statusCode);
                 routeTester.assert.equal(routeTester.failureInvalidTokenMessage, res.body.data.message);

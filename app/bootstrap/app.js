@@ -1,6 +1,7 @@
 var app = require("express")();
 var httpResponses = require("constants/httpResponses");
 var httpResponder = require("shared/httpResponder");
+var endpoints = require("constants/endpoints");
 
 
 
@@ -14,32 +15,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 
-var userEndpoint = exports.usersEndpoint = "/users";
+//user Bootstrap Routes
+var userEndpoint = exports.usersEndpoint = endpoints.usersEndpoint;
 var userBootstrapRoutes = require("resources/users/bootstrapRoutes");
-
-//user authRoutes
 app.use(userEndpoint, userBootstrapRoutes);
 
 //Routes for testing
-exports.testRoute = "/test-route";
-exports.authNeededTestRoute = "/auth-needed-test-route";
-
-app.get(this.testRoute, function(req, res) {
+exports.testingEndpoint = endpoints.testingEndpoint;
+exports.authMiddlewareTestingEndpoint = endpoints.authMiddlewareTestingEndpoint;
+app.get(this.testingEndpoint, function(req, res) {
     return res.json(
         httpResponder.respondToOKRequest(httpResponses.successfulTestRouteGETResponseMessage)
     );
 });
-app.post(this.testRoute, function(req, res) {
+app.post(this.testingEndpoint, function(req, res) {
     return res.json(
         httpResponder.respondToCREATEDRequest(httpResponses.successfulTestRoutePOSTResponseMessage)
     );
 });
-app.put(this.testRoute, function(req, res) {
+app.put(this.testingEndpoint, function(req, res) {
     return res.json(
         httpResponder.respondToOKRequest(httpResponses.successfulTestRoutePUTResponseMessage)
     );
 });
-app.delete(this.testRoute, function(req, res) {
+app.delete(this.testingEndpoint, function(req, res) {
     return res.json(
         httpResponder.respondToOKRequest(httpResponses.successfulTestRouteDELETEResponseMessage)
     );
@@ -47,20 +46,22 @@ app.delete(this.testRoute, function(req, res) {
 
 /*TOKEN VERIFICATION MIDDLEWARE*/
 var verifyTokenMiddleware = require("middleware/verifyToken");
-app.use("/", verifyTokenMiddleware);
-/*Define Routes that need authentication after this line*/
+app.use(endpoints.rootEndpoint, verifyTokenMiddleware);
+/*Define all routes that need authentication after this line*/
 
 /*AUTH needed test route*/
-app.post(this.authNeededTestRoute, function(req,res) {
+app.post(this.authMiddlewareTestingEndpoint, function(req,res) {
     return res.json(
         httpResponder.respondToOKRequest(httpResponses.successfulTestRouteAuthNeededResponseMessage)
    );
 });
 
-exports.localBaseUrl = "http://localhost:";
-exports.serverListeningMessage = "Server is listening on port: ";
-exports.serverClosingMessage = "Server is closing on port: ";
 
+
+var serverStatics = require("constants/serverStatics");
+exports.localBaseUrl = serverStatics.localBaseUrl;
+exports.serverListeningMessage = serverStatics.serverListeningMessage;
+exports.serverClosingMessage = serverStatics.serverClosingMessage;
 exports.start = function(port, callback) {
     var message = this.serverListeningMessage + port;
     server = app.listen(port, callback);

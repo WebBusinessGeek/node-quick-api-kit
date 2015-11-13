@@ -18,15 +18,20 @@ exports.respond = function(status, statusCode, message, data) {
 exports.respondToFailedRequest = function(statusCode, message, data) {
     return this.respond(httpResponses.failureResponseStatus, statusCode, message, data);
 };
+exports.respondToSuccessfulRequest = function(statusCode, message, data) {
+    return this.respond(httpResponses.successfulResponseStatus, statusCode, message, data);
+};
+
+
 exports.respondToBadRequest = function(message, data) {
     return this.respondToFailedRequest(httpResponses.failureBadRequestStatusCode, message, data);
 };
 exports.respondToUnauthorizedRequest = function(message, data) {
     return this.respondToFailedRequest(httpResponses.failureUnauthorizedStatusCode, message, data);
 };
-exports.respondToSuccessfulRequest = function(statusCode, message, data) {
-    return this.respond(httpResponses.successfulResponseStatus, statusCode, message, data);
-};
+
+
+
 exports.respondToOKRequest = function(message, data) {
     return this.respondToSuccessfulRequest(httpResponses.successOKStatusCode, message, data);
 };

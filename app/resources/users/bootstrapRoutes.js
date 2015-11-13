@@ -3,13 +3,16 @@ var User = require("resources/users/model");
 var jwt = require("jsonwebtoken");
 var multer = require("multer")();
 var httpResponses = require("constants/httpResponses");
-var tokenSecret = require("private/appSecrets").tokenSecret;
 var validator = require("validator");
 var passwordHasher = require("password-hash");
 var RevokedToken = require("resources/revokedTokens/model");
 var httpResponder = require("shared/httpResponder");
+var endpoints = require("constants/endpoints");
+var tokenSecret = require("private/appSecrets").tokenSecret;
+var tokenOptions = require("constants/tokenOptions");
+var serverStatics = require("constants/serverStatics");
 
-router.post("/register", multer.array(), function(req, res){
+router.post(endpoints.registerEndpoint, multer.array(), function(req, res){
     var email = req.body.email;
     var password = req.body.password;
     if(!email || !password) {
@@ -39,7 +42,7 @@ router.post("/register", multer.array(), function(req, res){
     });
 });
 
-router.post("/authenticate", multer.array(), function(req, res) {
+router.post(endpoints.authenticateEndpoint, multer.array(), function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     if(!email) {
@@ -67,11 +70,7 @@ router.post("/authenticate", multer.array(), function(req, res) {
             var payload = {
                 userId: user.id
             };
-            var options = {
-                expiresIn: "2h",
-                issuer: "api"
-            };
-            var token = jwt.sign(payload, tokenSecret, options);
+            var token = jwt.sign(payload, tokenSecret, tokenOptions);
 
             return res.json(
                 httpResponder.respondToOKRequest(httpResponses.successfulAuthenticationMessage, {token: token})
@@ -80,8 +79,8 @@ router.post("/authenticate", multer.array(), function(req, res) {
     });
 });
 
-router.use("/deauthenticate", function(req, res) {
-    var token = req.body.token || req.query.token || req.headers["x-access-token"];
+router.use(endpoints.DEauthenticateEndpoint, function(req, res) {
+    var token = req.body.token || req.query.token || req.headers[serverStatics.headerAccessTokenKey];
     if(!token) {
         return res.json(
             httpResponder.respondToUnauthorizedRequest(httpResponses.failureNoTokenProvidedMessage)
@@ -109,6 +108,5 @@ router.use("/deauthenticate", function(req, res) {
     });
 
 });
-
 
 module.exports = router;
