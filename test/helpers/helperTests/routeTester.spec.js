@@ -20,9 +20,9 @@ describe("routeTester", function() {
             assert.isString(value);
         });
     });
-    describe("testRoute", function() {
-        it("should export a testRoute variable", function() {
-            var value = routeTester.testRoute;
+    describe("testingEndpoint", function() {
+        it("should export a testingEndpoint variable", function() {
+            var value = routeTester.testingEndpoint;
             assert.isString(value);
         });
     });
@@ -62,7 +62,7 @@ describe("routeTester", function() {
                 assert.isFunction(value);
             });
             it("should successfully make a GET request", function(done) {
-                routeTester.getRequest(routeTester.testRoute).end(function(err, res) {
+                routeTester.getRequest(routeTester.testingEndpoint).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
                     assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRouteGETResponseMessage);
@@ -77,7 +77,7 @@ describe("routeTester", function() {
                 assert.isFunction(value);
             });
             it("should successfully make a POST request", function(done) {
-                routeTester.postRequest(routeTester.testRoute).end(function(err, res) {
+                routeTester.postRequest(routeTester.testingEndpoint).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
                     assert.equal(res.body.statusCode, routeTester.successCREATEDStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRoutePOSTResponseMessage);
@@ -94,7 +94,7 @@ describe("routeTester", function() {
                 var dataToPut = {
                     data : "data"
                 };
-                routeTester.putRequest(routeTester.testRoute, dataToPut).end(function(err, res) {
+                routeTester.putRequest(routeTester.testingEndpoint, dataToPut).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
                     assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRoutePUTResponseMessage);
@@ -108,7 +108,7 @@ describe("routeTester", function() {
                 assert.isFunction(value);
             });
             it("should successfully make a DELETE request", function(done) {
-                routeTester.deleteRequest(routeTester.testRoute).end(function(err, res) {
+                routeTester.deleteRequest(routeTester.testingEndpoint).end(function(err, res) {
                     assert.equal(res.body.status, routeTester.successfulResponseStatus);
                     assert.equal(res.body.statusCode, routeTester.successOKStatusCode);
                     assert.equal(res.body.data.message, routeTester.successfulTestRouteDELETEResponseMessage);

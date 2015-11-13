@@ -8,7 +8,7 @@ describe("Bootstrap.js", function() {
     after(function(done) {
         routeTester.stopServer(done);
     });*/
-    describe("testRoute", function() {
+    describe("testingEndpoint", function() {
         it("should return a successful response on get request", function() {
 
         });

@@ -7,8 +7,8 @@ exports.assert = assert;
 exports.testingPort = Math.floor((Math.random() * 3999) + 3000);
 exports.serverListeningMessage = app.serverListeningMessage;
 exports.serverClosingMessage = app.serverClosingMessage;
-exports.testRoute = app.testRoute;
-exports.authNeededTestRoute = app.authNeededTestRoute;
+exports.testingEndpoint = app.testingEndpoint;
+exports.authMiddlewareTestingEndpoint = app.authMiddlewareTestingEndpoint;
 exports.fullTestingUrl = app.localBaseUrl + this.testingPort;
 
 exports.usersEndpoint = app.usersEndpoint;
