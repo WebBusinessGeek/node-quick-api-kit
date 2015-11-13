@@ -52,8 +52,8 @@ describe("httpResponder", function() {
     });
     describe("respondToFailedRequest method", function() {
         it("should return a hard coded failure status, flexible status code, and flexible data object with a message", function() {
-
             var message = mimic.randomString;
+            
             var statusCode = httpResponses.successOKStatusCode;
 
             var status = httpResponses.failureResponseStatus;
@@ -71,7 +71,6 @@ describe("httpResponder", function() {
     });
     describe("respondToBadRequest method", function() {
         it("should return a hard coded failure status, bad request code, and flexible data object with a message", function() {
-
             var message = mimic.randomString;
 
             var status = httpResponses.failureResponseStatus;
@@ -91,9 +90,7 @@ describe("httpResponder", function() {
     });
     describe("respondToUnauthorizedRequest method", function() {
         it("should return a hard coded failure status, Unauthorized code, and flexible data object with a message", function() {
-
             var message = mimic.randomString;
-
 
             var status = httpResponses.failureResponseStatus;
             var statusCode = httpResponses.failureUnauthorizedStatusCode;
@@ -111,8 +108,8 @@ describe("httpResponder", function() {
     });
     describe("respondToSuccessfulRequest", function() {
         it("should return a hard coded success status, flexible statusCode, and flexible data object with a message", function() {
-
             var message = mimic.randomString;
+
             var statusCode = httpResponses.successOKStatusCode;
 
             var status = httpResponses.successfulResponseStatus;
@@ -132,7 +129,6 @@ describe("httpResponder", function() {
         it("should return a hard coded success status, hard coded OK statusCode, and flexible data object", function() {
             var message = mimic.randomString;
 
-
             var status = httpResponses.successfulResponseStatus;
             var statusCode = httpResponses.successOKStatusCode;
 
@@ -150,7 +146,6 @@ describe("httpResponder", function() {
     describe("respondToCreatedRequest", function() {
         it("should return a hard coded success status, hard coded CREATED statusCode, and flexible data object", function() {
             var message = mimic.randomString;
-
 
             var status = httpResponses.successfulResponseStatus;
             var statusCode = httpResponses.successCREATEDStatusCode;
